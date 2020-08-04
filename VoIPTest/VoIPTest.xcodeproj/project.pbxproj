@@ -20,6 +20,12 @@
 		8BA1684E1E5BDD6900B3D3DA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA1684D1E5BDD6900B3D3DA /* UIKit.framework */; };
 		8BA168511E5BDFB700B3D3DA /* RingCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA168501E5BDFB700B3D3DA /* RingCall.m */; };
 		8BA168531E5BED3800B3D3DA /* voip_call.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8BA168521E5BED3800B3D3DA /* voip_call.caf */; };
+		AF9C619124D8FE80005A6FDE /* RCCall.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C619024D8FE80005A6FDE /* RCCall.m */; };
+		AF9C619424D8FED7005A6FDE /* RCCallSession.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C619324D8FED7005A6FDE /* RCCallSession.m */; };
+		AF9C619924D9008A005A6FDE /* RCCallClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C619824D9008A005A6FDE /* RCCallClient.m */; };
+		AF9C619C24D9028C005A6FDE /* RCCallUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C619B24D9028C005A6FDE /* RCCallUserProfile.m */; };
+		AF9C619F24D90559005A6FDE /* RCCXCall.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C619E24D90559005A6FDE /* RCCXCall.m */; };
+		AF9C61A324D906C9005A6FDE /* RCCallKitUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C61A224D906C9005A6FDE /* RCCallKitUtility.m */; };
 		D77EEDC524D3F0D9002533E2 /* PARNCallKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D77EEDC424D3F0D9002533E2 /* PARNCallKit.m */; };
 		D77EEDC824D3F980002533E2 /* PARNCallIKitConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D77EEDC724D3F980002533E2 /* PARNCallIKitConfig.m */; };
 		D77EEDCF24D408D7002533E2 /* CRJCall.m in Sources */ = {isa = PBXBuildFile; fileRef = D77EEDCE24D408D7002533E2 /* CRJCall.m */; };
@@ -71,6 +77,20 @@
 		8BA1684F1E5BDFB700B3D3DA /* RingCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingCall.h; sourceTree = "<group>"; };
 		8BA168501E5BDFB700B3D3DA /* RingCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingCall.m; sourceTree = "<group>"; };
 		8BA168521E5BED3800B3D3DA /* voip_call.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = voip_call.caf; sourceTree = "<group>"; };
+		AF9C618F24D8FE80005A6FDE /* RCCall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCall.h; sourceTree = "<group>"; };
+		AF9C619024D8FE80005A6FDE /* RCCall.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCall.m; sourceTree = "<group>"; };
+		AF9C619224D8FED7005A6FDE /* RCCallSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallSession.h; sourceTree = "<group>"; };
+		AF9C619324D8FED7005A6FDE /* RCCallSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallSession.m; sourceTree = "<group>"; };
+		AF9C619524D8FF12005A6FDE /* RCMultiCallInviteNewUserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCMultiCallInviteNewUserDelegate.h; sourceTree = "<group>"; };
+		AF9C619624D8FF95005A6FDE /* RCStatusDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCStatusDefine.h; sourceTree = "<group>"; };
+		AF9C619724D9008A005A6FDE /* RCCallClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallClient.h; sourceTree = "<group>"; };
+		AF9C619824D9008A005A6FDE /* RCCallClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallClient.m; sourceTree = "<group>"; };
+		AF9C619A24D9028C005A6FDE /* RCCallUserProfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallUserProfile.h; sourceTree = "<group>"; };
+		AF9C619B24D9028C005A6FDE /* RCCallUserProfile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallUserProfile.m; sourceTree = "<group>"; };
+		AF9C619D24D90559005A6FDE /* RCCXCall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCXCall.h; sourceTree = "<group>"; };
+		AF9C619E24D90559005A6FDE /* RCCXCall.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCXCall.m; sourceTree = "<group>"; };
+		AF9C61A124D906C9005A6FDE /* RCCallKitUtility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallKitUtility.h; sourceTree = "<group>"; };
+		AF9C61A224D906C9005A6FDE /* RCCallKitUtility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallKitUtility.m; sourceTree = "<group>"; };
 		D77EEDC324D3F0D9002533E2 /* PARNCallKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PARNCallKit.h; sourceTree = "<group>"; };
 		D77EEDC424D3F0D9002533E2 /* PARNCallKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PARNCallKit.m; sourceTree = "<group>"; };
 		D77EEDC624D3F980002533E2 /* PARNCallIKitConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PARNCallIKitConfig.h; sourceTree = "<group>"; };
@@ -139,6 +159,7 @@
 		8BA168121E5BD88700B3D3DA /* VoIPTest */ = {
 			isa = PBXGroup;
 			children = (
+				AF9C618E24D8FE1A005A6FDE /* RongCallKit */,
 				D77EEDCB24D407AC002533E2 /* CRJCallKit */,
 				8BA168491E5BD8BA00B3D3DA /* VoIPTest.entitlements */,
 				8BA168521E5BED3800B3D3DA /* voip_call.caf */,
@@ -196,6 +217,35 @@
 				8BA168471E5BD8B000B3D3DA /* PushKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AF9C618E24D8FE1A005A6FDE /* RongCallKit */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C618F24D8FE80005A6FDE /* RCCall.h */,
+				AF9C619024D8FE80005A6FDE /* RCCall.m */,
+				AF9C619724D9008A005A6FDE /* RCCallClient.h */,
+				AF9C619824D9008A005A6FDE /* RCCallClient.m */,
+				AF9C619224D8FED7005A6FDE /* RCCallSession.h */,
+				AF9C619324D8FED7005A6FDE /* RCCallSession.m */,
+				AF9C619A24D9028C005A6FDE /* RCCallUserProfile.h */,
+				AF9C619B24D9028C005A6FDE /* RCCallUserProfile.m */,
+				AF9C619D24D90559005A6FDE /* RCCXCall.h */,
+				AF9C619E24D90559005A6FDE /* RCCXCall.m */,
+				AF9C619524D8FF12005A6FDE /* RCMultiCallInviteNewUserDelegate.h */,
+				AF9C619624D8FF95005A6FDE /* RCStatusDefine.h */,
+				AF9C61A024D906B8005A6FDE /* Utility */,
+			);
+			path = RongCallKit;
+			sourceTree = "<group>";
+		};
+		AF9C61A024D906B8005A6FDE /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C61A124D906C9005A6FDE /* RCCallKitUtility.h */,
+				AF9C61A224D906C9005A6FDE /* RCCallKitUtility.m */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		D77EEDCB24D407AC002533E2 /* CRJCallKit */ = {
@@ -283,7 +333,7 @@
 				TargetAttributes = {
 					8BA1680F1E5BD88700B3D3DA = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = E7P9CREU6H;
+						DevelopmentTeam = UQ389D6XH6;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -362,7 +412,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF9C619124D8FE80005A6FDE /* RCCall.m in Sources */,
 				D77EEDC824D3F980002533E2 /* PARNCallIKitConfig.m in Sources */,
+				AF9C619924D9008A005A6FDE /* RCCallClient.m in Sources */,
 				D77EEDD824D4130D002533E2 /* CRJProviderDelegate.m in Sources */,
 				8BA1681B1E5BD88700B3D3DA /* ViewController.m in Sources */,
 				D77EEDC524D3F0D9002533E2 /* PARNCallKit.m in Sources */,
@@ -372,8 +424,12 @@
 				8BA168151E5BD88700B3D3DA /* main.m in Sources */,
 				8BA1684C1E5BD94D00B3D3DA /* VideoTalkManager.m in Sources */,
 				D77EEDD524D40DDA002533E2 /* CRJCallKitManager.m in Sources */,
+				AF9C619424D8FED7005A6FDE /* RCCallSession.m in Sources */,
 				D77EEDCF24D408D7002533E2 /* CRJCall.m in Sources */,
+				AF9C61A324D906C9005A6FDE /* RCCallKitUtility.m in Sources */,
 				D77EEDDB24D42221002533E2 /* CRJVoIPPushManager.m in Sources */,
+				AF9C619F24D90559005A6FDE /* RCCXCall.m in Sources */,
+				AF9C619C24D9028C005A6FDE /* RCCallUserProfile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,10 +579,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VoIPTest/VoIPTest.entitlements;
-				DEVELOPMENT_TEAM = E7P9CREU6H;
+				DEVELOPMENT_TEAM = UQ389D6XH6;
 				INFOPLIST_FILE = VoIPTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.XXXXXXX;
+				PRODUCT_BUNDLE_IDENTIFIER = com.VegetableBasket.VoIPTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -536,10 +593,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VoIPTest/VoIPTest.entitlements;
-				DEVELOPMENT_TEAM = E7P9CREU6H;
+				DEVELOPMENT_TEAM = UQ389D6XH6;
 				INFOPLIST_FILE = VoIPTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.XXXXXXX;
+				PRODUCT_BUNDLE_IDENTIFIER = com.VegetableBasket.VoIPTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

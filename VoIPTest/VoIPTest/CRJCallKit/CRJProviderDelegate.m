@@ -11,7 +11,8 @@
 #import "CRJCallKitManager.h"
 #import "CRJProviderDelegate.h"
 @interface CRJProviderDelegate ()
-//ProviderDelegate 需要和 CXProvider 和 CXCallController 打交道，因此保持两个对二者的引用。
+// ProviderDelegate 需要和 CXProvider 和 CXCallController
+// 打交道，因此保持两个对二者的引用。
 @property (nonatomic, strong) CRJCallKitManager *callManager;
 @property (nonatomic, strong) CXProvider *provider;
 @end
@@ -19,6 +20,7 @@
 @implementation CRJProviderDelegate {
     NSMutableDictionary *_settings;
 }
+
 + (instancetype)shared {
     static CRJProviderDelegate *instance;
     static dispatch_once_t onceToken;
@@ -34,26 +36,36 @@
         _settings = [NSMutableDictionary dictionary];
 
         self.callManager = [CRJCallKitManager shared];
-        //用一个 CXProviderConfiguration 初始化 CXProvider，前者在后面会定义成一个静态属性。CXProviderConfiguration 用于定义通话的行为和能力。
-        self.provider = [[CXProvider alloc] initWithConfiguration:[self getProviderConfiguration]];
+        //用一个 CXProviderConfiguration 初始化
+        //CXProvider，前者在后面会定义成一个静态属性。CXProviderConfiguration
+        //用于定义通话的行为和能力。
+        self.provider = [[CXProvider alloc]
+            initWithConfiguration:[self getProviderConfiguration]];
         //为了能够响应来自于 CXProvider 的事件，你需要设置它的委托。
         [self.provider setDelegate:self queue:nil];
     }
     return self;
 }
 
-//通过设置CXProviderConfiguration来支持视频通话、电话号码处理，并将通话群组的数字限制为 1 个，其实光看属性名大家也能看得懂吧。
+//通过设置CXProviderConfiguration来支持视频通话、电话号码处理，并将通话群组的数字限制为
+//1 个，其实光看属性名大家也能看得懂吧。
 - (CXProviderConfiguration *)getProviderConfiguration {
 #ifdef DEBUG
     NSLog(@"[RNCallKit][getProviderConfiguration]");
 #endif
-    CXProviderConfiguration *providerConfiguration = [[CXProviderConfiguration alloc] initWithLocalizedName:_settings[@"appName"]];
+
+    CXProviderConfiguration *providerConfiguration =
+        [[CXProviderConfiguration alloc]
+            initWithLocalizedName:_settings[@"appName"]];
     providerConfiguration.supportsVideo = YES;
     providerConfiguration.maximumCallGroups = 1;
     providerConfiguration.maximumCallsPerCallGroup = 1;
-    providerConfiguration.supportedHandleTypes = [NSSet setWithObjects:[NSNumber numberWithInteger:CXHandleTypePhoneNumber], nil];
+    providerConfiguration.supportedHandleTypes = [NSSet
+        setWithObjects:[NSNumber numberWithInteger:CXHandleTypePhoneNumber],
+                       nil];
     if (_settings[@"imageName"]) {
-        providerConfiguration.iconTemplateImageData = UIImagePNGRepresentation([UIImage imageNamed:_settings[@"imageName"]]);
+        providerConfiguration.iconTemplateImageData = UIImagePNGRepresentation(
+            [UIImage imageNamed:_settings[@"imageName"]]);
     }
     if (_settings[@"ringtoneSound"]) {
         providerConfiguration.ringtoneSound = _settings[@"ringtoneSound"];
@@ -61,15 +73,82 @@
     return providerConfiguration;
 }
 
++ (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options NS_AVAILABLE_IOS(9_0) {
+#ifdef DEBUG
+    NSLog(@"[RNCallKit][application:openURL]");
+#endif
+    /*
+    NSString *handle = [url startCallHandle];
+    if (handle != nil && handle.length > 0 ){
+        NSDictionary *userInfo = @{
+            @"handle": handle,
+            @"video": @NO
+        };
+        [[NSNotificationCenter defaultCenter] postNotificationName:RNCallKitHandleStartCallNotification
+                                                            object:self
+                                                          userInfo:userInfo];
+        return YES;
+    }
+    return NO;
+    */
+    return YES;
+}
+
++ (BOOL)application:(UIApplication *)application
+    continueUserActivity:(NSUserActivity *)userActivity
+      restorationHandler:(void (^)(NSArray *__nullable restorableObjects))restorationHandler {
+#ifdef DEBUG
+    NSLog(@"[RNCallKit][application:continueUserActivity]");
+#endif
+    INInteraction *interaction = userActivity.interaction;
+    INPerson *contact;
+    NSString *handle;
+    BOOL isAudioCall = [userActivity.activityType isEqualToString:INStartAudioCallIntentIdentifier];
+    BOOL isVideoCall = [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier];
+
+    if (isAudioCall) {
+        INStartAudioCallIntent *startAudioCallIntent = (INStartAudioCallIntent *)interaction.intent;
+        contact = [startAudioCallIntent.contacts firstObject];
+    } else if (isVideoCall) {
+        INStartVideoCallIntent *startVideoCallIntent = (INStartVideoCallIntent *)interaction.intent;
+        contact = [startVideoCallIntent.contacts firstObject];
+    }
+
+    if (contact != nil) {
+        handle = contact.personHandle.value;
+    }
+
+    if (handle != nil && handle.length > 0) {
+        NSDictionary *userInfo = @{
+            @"handle" : handle,
+            @"video" : @(isVideoCall)
+        };
+#warning 逻辑
+        //如果当前有电话，需要根据自己App的业务逻辑判断
+
+        //如果没有电话，就打电话，调用自己的打电话方法。
+
+        //        [[NSNotificationCenter defaultCenter] postNotificationName:RNCallKitHandleStartCallNotification
+        //                                                            object:self
+        //                                                          userInfo:userInfo];
+        return YES;
+    }
+    return NO;
+}
+
 //这个方法牛逼了，它是用来更新系统电话属性的。。
-- (CXCallUpdate *)callUpdateWithHandle:(NSString *)handle hasVideo:(BOOL)hasVideo {
+- (CXCallUpdate *)callUpdateWithHandle:(NSString *)handle
+                              hasVideo:(BOOL)hasVideo {
     CXCallUpdate *update = [[CXCallUpdate alloc] init];
     //这里是系统通话记录里显示的联系人名称哦。需要显示什么按照你们的业务逻辑来。
     update.localizedCallerName = @"ParadiseDuo";
     update.supportsGrouping = false;
     update.supportsHolding = false;
     //填了联系人的名字，怎么能不填他的handle('电话号码')呢，具体填什么，根据你们的业务逻辑来
-    update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:handle];
+    update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber
+                                                   value:handle];
     update.hasVideo = hasVideo;
     return update;
 }
@@ -87,27 +166,34 @@
                     handle:(NSString *)handle
                   hasVideo:(BOOL)hasVideo
                 completion:(void (^)(NSError *error))completion {
-    
     //准备向系统报告一个 call update 事件，它包含了所有的来电相关的元数据。
     CXCallUpdate *update = [self callUpdateWithHandle:handle hasVideo:hasVideo];
-    
-    //调用 CXProvider 的reportIcomingCall(with:update:completion:)方法通知系统有来电。
-    [self.provider reportNewIncomingCallWithUUID:uuid update:update completion:^(NSError * _Nullable error) {
-        if (error == nil) {
-            //completion 回调会在系统处理来电时调用。如果没有任何错误，你就创建一个 Call 实例，将它添加到 CallManager 的通话列表。
-            CRJCall *call = [[CRJCall alloc] initWithUUID:uuid outgoing:NO handle:handle];
-            [self.callManager add:call];
-        }
-        
-        //调用 completion，如果它不为空的话。
-        if (completion) {
-            completion(error);
-        }
-    }];
+
+    //调用 CXProvider
+    //的reportIcomingCall(with:update:completion:)方法通知系统有来电。
+    [self.provider reportNewIncomingCallWithUUID:uuid
+                                          update:update
+                                      completion:^(NSError *_Nullable error) {
+                                          if (error == nil) {
+                                              // completion
+                                              // 回调会在系统处理来电时调用。如果没有任何错误，你就创建一个
+                                              // Call 实例，将它添加到
+                                              // CallManager 的通话列表。
+                                              CRJCall *call = [[CRJCall alloc]
+                                                  initWithUUID:uuid
+                                                      outgoing:NO
+                                                        handle:handle];
+                                              [self.callManager add:call];
+                                          }
+
+                                          !completion ?: completion(error);
+                                      }];
 }
 
 #pragma mark - CXProviderDelegate
-//CXProviderDelegate 唯一一个必须实现的代理方法！！当 CXProvider 被 reset 时，这个方法被调用，这样你的 App 就可以清空所有去电，会到干净的状态。在这个方法中，你会停止所有的呼出音频会话，然后抛弃所有激活的通话。
+// CXProviderDelegate 唯一一个必须实现的代理方法！！当 CXProvider 被 reset
+// 时，这个方法被调用，这样你的 App
+// 就可以清空所有去电，会到干净的状态。在这个方法中，你会停止所有的呼出音频会话，然后抛弃所有激活的通话。
 - (void)providerDidReset:(CXProvider *)provider {
     [self stopAudio];
     for (CRJCall *call in self.callManager.calls) {
@@ -117,29 +203,41 @@
 #warning //这里添加你们挂断电话或抛弃所有激活的通话的代码。。。
 }
 
-- (void)provider:(CXProvider *)provider performStartCallAction:(CXStartCallAction *)action {
+- (void)provider:(CXProvider *)provider
+    performStartCallAction:(CXStartCallAction *)action {
 #ifdef DEBUG
-    NSLog(@"[RNCallKit][CXProviderDelegate][provider:performStartCallAction]");
+    NSLog(
+        @"[RNCallKit][CXProviderDelegate][provider:performStartCallAction]");
 #endif
     //向系统通讯录更新通话记录
-    CXCallUpdate *update = [self callUpdateWithHandle:action.handle.value hasVideo:action.isVideo];
+    CXCallUpdate *update = [self callUpdateWithHandle:action.handle.value
+                                             hasVideo:action.isVideo];
     [provider reportCallWithUUID:action.callUUID updated:update];
 
-    __block CRJCall *call = [[CRJCall alloc] initWithUUID:action.callUUID outgoing:YES handle:action.handle.value];
-    //当我们用 UUID 创建出 Call 对象之后，我们就应该去配置 App 的音频会话。和呼入通话一样，你的唯一任务就是配置。真正的处理在后面进行，也就是在 provider(_:didActivate) 委托方法被调用时
+    __block CRJCall *call = [[CRJCall alloc] initWithUUID:action.callUUID
+                                                 outgoing:YES
+                                                   handle:action.handle.value];
+    //当我们用 UUID 创建出 Call 对象之后，我们就应该去配置 App
+    //的音频会话。和呼入通话一样，你的唯一任务就是配置。真正的处理在后面进行，也就是在
+    //provider(_:didActivate) 委托方法被调用时
     [self configureAudioSession];
 
     __weak CRJCall *weakCall = call;
     __weak __typeof(self) weakSelf = self;
-    //delegate 会监听通话的生命周期。它首先会会报告的就是呼出通话开始连接。当通话最终连上时，delegate 也会被通知。
+    // delegate
+    // 会监听通话的生命周期。它首先会会报告的就是呼出通话开始连接。当通话最终连上时，delegate
+    // 也会被通知。
     call.connectedStateChanged = ^{
         if (call.connectedState == CRJCallConnectedStatePending) {
-            [weakSelf.provider reportOutgoingCallWithUUID:weakCall.uuid startedConnectingAtDate:[NSDate date]];
+            [weakSelf.provider reportOutgoingCallWithUUID:weakCall.uuid
+                                  startedConnectingAtDate:[NSDate date]];
         } else if (call.connectedState == CRJCallConnectedStateComplete) {
-            [weakSelf.provider reportOutgoingCallWithUUID:weakCall.uuid connectedAtDate:[NSDate date]];
+            [weakSelf.provider reportOutgoingCallWithUUID:weakCall.uuid
+                                          connectedAtDate:[NSDate date]];
         }
     };
-    //调用 call.start() 方法会导致 call 的生命周期变化。如果连接成功，则标记 action 为 fullfill。
+    //调用 call.start() 方法会导致 call 的生命周期变化。如果连接成功，则标记
+    //action 为 fullfill。
     [call start:^(BOOL success) {
         if (success) {
 #warning 这里填写你们App内打电话的逻辑。。
@@ -153,33 +251,96 @@
 }
 
 //系统接电话的代理
-- (void)provider:(CXProvider *)provider performAnswerCallAction:(CXAnswerCallAction *)action {
+- (void)provider:(CXProvider *)provider
+    performAnswerCallAction:(CXAnswerCallAction *)action {
     //从 callManager 中获得一个引用，UUID 指定为要接听的动画的 UUID。
     CRJCall *call = [self.callManager callWithUUID:action.callUUID];
     if (!call) {
         [action fail];
         return;
     }
-    
-    
-    //设置通话要用的 audio session 是 App 的责任。系统会以一个较高的优先级来激活这个 session。
+
+    //设置通话要用的 audio session 是 App
+    //的责任。系统会以一个较高的优先级来激活这个 session。
     [self configureAudioSession];
     //通过调用 answer，表明这个通话现在激活
     [call answer];
 #warning 在这里添加自己App接电话的逻辑
-       
-    //在处理一个 CXAction 时，重要的一点是，要么你拒绝它（fail），要么满足它（fullfill)。如果处理过程中没有发生错误，你可以调用 fullfill() 表示成功。
-    [action fulfill];
 
+    //在处理一个 CXAction
+    //时，重要的一点是，要么你拒绝它（fail），要么满足它（fullfill)。如果处理过程中没有发生错误，你可以调用
+    //fullfill() 表示成功。
+    [action fulfill];
 }
 
+- (void)provider:(CXProvider *)provider
+    performEndCallAction:(CXEndCallAction *)action {
+    //从 callManager 中获得一个引用，UUID 指定为要接听的动画的 UUID。
+    CRJCall *call = [self.callManager callWithUUID:action.callUUID];
+    if (!call) {
+        [action fail];
+        return;
+    }
 
-//当系统激活 CXProvider 的 audio session时，委托会被调用。这给你一个机会开始处理通话的音频。
-- (void)provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession {
+    //当 call 即将结束时，停止这次通话的音频处理。
+    [self stopAudio];
+    //调用 end() 方法修改本次通话的状态，以允许其他类和新的状态交互。
+    [call end];
+    //在这里添加自己App挂断电话的逻辑
+    //将 action 标记为 fulfill。
+    [action fulfill];
+    //当你不再需要这个通话时，可以让 callManager 回收它。
+    [self.callManager remove:call];
+}
+
+- (void)provider:(CXProvider *)provider
+    performSetHeldCallAction:(CXSetHeldCallAction *)action {
+    //从 callManager 中获得一个引用，UUID 指定为要接听的动画的 UUID。
+    CRJCall *call = [self.callManager callWithUUID:action.callUUID];
+    if (!call) {
+        [action fail];
+        return;
+    }
+    //    CRJCallStateConnecting,
+    //    CRJCallStateActive,
+    //    CRJCallStateHeld,
+    //    CRJCallStateEnded,
+    //    CRJCallStateMuted
+    //获得 CXCall 对象之后，我们要根据 action 的 isOnHold 属性来设置它的 state。
+    call.state = action.isOnHold ? CRJCallStateHeld : CRJCallStateActive;
+    //根据状态的不同，分别进行启动或停止音频会话。
+    if (call.state == CRJCallStateHeld) {
+        [[CRJAudioManager shared] stopAudio];
+    } else {
+        [[CRJAudioManager shared] startAudio];
+    }
+    [action fulfill];
+#warning 在这里添加你们自己的通话挂起逻辑
+}
+
+- (void)provider:(CXProvider *)provider
+    performSetMutedCallAction:(CXSetMutedCallAction *)action {
+    //从 callManager 中获得一个引用，UUID 指定为要接听的动画的 UUID。
+    CRJCall *call = [self.callManager callWithUUID:action.callUUID];
+    if (!call) {
+        [action fail];
+        return;
+    }
+    //获得 CXCall 对象之后，我们要根据 action 的 isOnHold 属性来设置它的 state。
+    call.state = action.isMuted ? CRJCallStateMuted : CRJCallStateActive;
+    [action fulfill];
+#warning 在这里添加你们自己的麦克风静音逻辑
+}
+
+//当系统激活 CXProvider 的 audio
+//session时，委托会被调用。这给你一个机会开始处理通话的音频。
+- (void)provider:(CXProvider *)provider
+    didActivateAudioSession:(AVAudioSession *)audioSession {
 #ifdef DEBUG
-    NSLog(@"[RNCallKit][CXProviderDelegate][provider:didActivateAudioSession]");
+    NSLog(
+        @"[RNCallKit][CXProviderDelegate][provider:didActivateAudioSession]");
 #endif
-    [self stopAudio]; //一定要记得播放铃声呐。。
+    [[CRJAudioManager shared] startAudio];
 }
 
 @end

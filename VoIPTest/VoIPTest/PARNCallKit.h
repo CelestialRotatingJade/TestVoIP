@@ -23,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setup:(NSDictionary *)options;
 
 
-
 + (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options NS_AVAILABLE_IOS(9_0);

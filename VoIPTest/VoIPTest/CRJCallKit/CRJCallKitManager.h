@@ -6,14 +6,13 @@
 //  Copyright © 2020 oopsr. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CallKit/CallKit.h>
+#import <Foundation/Foundation.h>
 NS_ASSUME_NONNULL_BEGIN
 @class CRJCall;
 @interface CRJCallKitManager : NSObject
 
 @property (nonatomic, strong) NSMutableArray *calls;
-
 
 + (instancetype)shared;
 
@@ -27,6 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeAllCalls;
 
+- (void)startCallWithHandle:(NSString *)handle videoEnabled:(BOOL)videoEnabled;
+
+//通话暂时挂起
+- (void)setHeld:(CRJCall *)call onHold:(BOOL)onHold;
+
+//麦克风静音
+- (void)setMute:(CRJCall *)call muted:(BOOL)muted;
 @end
 
 NS_ASSUME_NONNULL_END
