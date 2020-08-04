@@ -148,9 +148,14 @@
     [[CRJAudioManager shared] configureAudioSession];
 }
 
+- (void)startAudio {
+    [[CRJAudioManager shared] startAudio];
+}
+
 - (void)stopAudio {
     [[CRJAudioManager shared] stopAudio];
 }
+
 
 //这个方法需要在所有接电话的地方手动调用，需要根据自己的业务逻辑来判断。还有就是不要忘了iOS的版本兼容哦。。
 - (void)reportIncomingCall:(NSUUID *)uuid
@@ -184,6 +189,9 @@
                                       }];
 }
 
+
+
+
 #pragma mark - CXProviderDelegate
 /*
  当接收到呼叫重置时 调用的函数，这个函数必须被实现，其不需做任何逻辑，只用来重置状态.
@@ -212,7 +220,7 @@
  */
 - (void)provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession {
     CRJCallKitLog(@"provider %@", provider);
-    [[CRJAudioManager shared] startAudio];
+    [self startAudio];
 }
 
 /*
@@ -347,9 +355,9 @@
     call.state = action.isOnHold ? CRJCallStateHeld : CRJCallStateActive;
     //根据状态的不同，分别进行启动或停止音频会话。
     if (call.state == CRJCallStateHeld) {
-        [[CRJAudioManager shared] stopAudio];
+        [self stopAudio];
     } else {
-        [[CRJAudioManager shared] startAudio];
+        [self startAudio];
     }
     [action fulfill];
 #warning 在这里添加你们自己的通话挂起逻辑

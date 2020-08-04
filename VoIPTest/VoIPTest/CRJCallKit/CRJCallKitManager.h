@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeAllCalls;
 
+//打电话
 - (void)startCall:(NSString *)handle video:(BOOL)video;
 
 //通话暂时挂起
@@ -33,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 //麦克风静音
 - (void)setMute:(CRJCall *)call muted:(BOOL)muted;
+
+//挂断电话
+- (void)end:(CRJCall *)call;
+
 @end
 
 NS_ASSUME_NONNULL_END

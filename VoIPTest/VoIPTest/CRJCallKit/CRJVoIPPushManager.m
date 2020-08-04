@@ -8,6 +8,7 @@
 
 #import "CRJVoIPPushManager.h"
 
+#import "CRJCallKitEnum.h"
 #import "CRJProviderDelegate.h"
 #import <PushKit/PushKit.h>
 
@@ -60,14 +61,14 @@ typedef void (^VoipMsgBlcok)(PKPushRegistry *, PKPushPayload *, NSString *);
 #pragma mark PKPushRegistryDelegate
 
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(NSString *)type {
-        NSData *deviceTokenData = credentials.token;
-        const unsigned *tokenBytes = [deviceTokenData bytes];
-        NSString *pushDeviceTokenString = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x", ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]), ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]), ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+    NSData *deviceTokenData = credentials.token;
+    const unsigned *tokenBytes = [deviceTokenData bytes];
+    NSString *pushDeviceTokenString = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x", ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]), ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]), ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
     //    /*
     //     yuhuiMr iphone7P:
     //     bec3bc20083580af2c4a164cd168a999a976360e3fd5e8cb6d00fc04d8827ea4
     //     */
-        NSLog(@"voip deviceToken = %@", pushDeviceTokenString);
+    NSLog(@"voip deviceToken = %@", pushDeviceTokenString);
     //    [[NSUserDefaults standardUserDefaults] setObject:pushDeviceTokenString forKey:@"voipDeviceToken"];
     //    [NSUserDefaults.standardUserDefaults synchronize];
 
@@ -151,8 +152,10 @@ typedef void (^VoipMsgBlcok)(PKPushRegistry *, PKPushPayload *, NSString *);
         [[CRJProviderDelegate shared] reportIncomingCall:uuid
                                                   handle:handle
                                                 hasVideo:hasVideo
-                                              completion:^(NSError *_Nonnull error){
-
+                                              completion:^(NSError *_Nonnull error) {
+                                                  if (error) {
+                                                      CRJCallKitLog(@"CallKit & reportIncomingCall Error %@", error);
+                                                  }
                                               }];
     }
 }

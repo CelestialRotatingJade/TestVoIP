@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "CRJProviderDelegate.h"
+#import "CRJCallKitManager.h"
 @interface ViewController ()
 
 @end
@@ -39,12 +40,16 @@
     NSNumber *hasVideo = dictionaryPayload[@"hasVideo"];
 
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
-    [[CRJProviderDelegate shared] reportIncomingCall:uuid
-                                              handle:handle
-                                            hasVideo:hasVideo
-                                          completion:^(NSError *_Nonnull error){
-
-                                          }];
+    
+    [[CRJCallKitManager shared] startCall:@"zhangsan_voip" video:YES];
+    
+    
+//    [[CRJProviderDelegate shared] reportIncomingCall:uuid
+//                                              handle:handle
+//                                            hasVideo:hasVideo
+//                                          completion:^(NSError *_Nonnull error){
+//
+//                                          }];
     
     
 }

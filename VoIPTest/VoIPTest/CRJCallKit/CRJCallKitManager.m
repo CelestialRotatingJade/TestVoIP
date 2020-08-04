@@ -48,7 +48,7 @@
     call.stateChanged = ^{
         !weakSelf.callsChangedHandler ?: weakSelf.callsChangedHandler();
     };
-    
+
     !self.callsChangedHandler ?: self.callsChangedHandler();
 }
 
@@ -112,7 +112,7 @@
     [self.callController requestTransaction:transaction
                                  completion:^(NSError *_Nullable error) {
                                      if (error != nil) {
-                                         CRJCallKitLog(@"[requestTransaction] Error requesting transaction (%@): (%@)",transaction.actions,error);
+                                         CRJCallKitLog(@"[requestTransaction] Error requesting transaction (%@): (%@)", transaction.actions, error);
                                      } else {
                                          CRJCallKitLog(@"[requestTransaction] Requested transaction successfully");
                                      }
