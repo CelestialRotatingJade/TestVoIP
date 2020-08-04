@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 //系统来电页面显示的app名称和系统通讯记录的信息
 @property(nonatomic, strong) NSString *localizedName;
-
 //来电铃声
 @property(nonatomic, strong) NSString *ringtoneSound;
 //锁屏接听时，系统界面右下角的app图标，要求40 x 40大小

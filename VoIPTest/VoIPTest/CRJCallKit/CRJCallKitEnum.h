@@ -9,6 +9,12 @@
 #ifndef CRJCallKitEnum_h
 #define CRJCallKitEnum_h
 
+#ifdef DEBUG
+#define CRJCallKitLog(...) NSLog(@"%s 第%d行 \n %@\n\n",__func__,__LINE__,[NSString stringWithFormat:__VA_ARGS__])
+#else
+#define CRJCallKitLog(...)
+#endif
+
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSUInteger, CRJCallState) {
     CRJCallStateConnecting,

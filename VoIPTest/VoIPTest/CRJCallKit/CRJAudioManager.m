@@ -7,7 +7,14 @@
 //
 
 #import "CRJAudioManager.h"
+#import "CRJCallKitEnum.h"
 #import <AVFoundation/AVFoundation.h>
+
+@interface CRJAudioManager ()
+@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
+@property (nonatomic, strong) NSTimer *timer;
+@end
+
 @implementation CRJAudioManager
 
 + (instancetype)shared {
@@ -19,11 +26,8 @@
     return instance;
 }
 
-
 - (void)configureAudioSession {
-#ifdef DEBUG
-    NSLog(@"[RNCallKit][configureAudioSession] Activating audio session");
-#endif
+    CRJCallKitLog(@"configureAudioSession");
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     [audioSession setMode:AVAudioSessionModeVoiceChat error:nil];
@@ -37,15 +41,25 @@
 }
 
 - (void)startAudio {
-#ifdef DEBUG
-    NSLog(@"[RNCallKit][startAudio] startAudio");
-#endif
+    CRJCallKitLog(@"startAudio...");
+    if(_timer){
+        [_timer invalidate];
+        _timer = nil;
+    }else{
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(playkSystemSound) userInfo:nil repeats:YES];
+    }
 }
 
 - (void)stopAudio {
-#ifdef DEBUG
-    NSLog(@"[RNCallKit][stopAudio] stopAudio");
-#endif
+    CRJCallKitLog(@"stopAudio...");
+    if(_timer){
+        [_timer invalidate];
+        _timer = nil;
+    }
 }
 
+//振动
+- (void)playkSystemSound{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
 @end

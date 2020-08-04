@@ -24,22 +24,16 @@
 
 - (void)setState:(CRJCallState)state {
     _state = state;
-    if (self.stateChanged) {
-        self.stateChanged();
-    }
+    !self.stateChanged ?: self.stateChanged();
 }
 
 - (void)setConnectedState:(CRJCallConnectedState)connectedState {
     _connectedState = connectedState;
-    if (self.connectedStateChanged) {
-        self.connectedStateChanged();
-    }
+    !self.connectedStateChanged ?: self.connectedStateChanged();
 }
 
 - (void)start:(void (^)(BOOL success))completion {
-    if (completion) {
-        completion(YES);
-    }
+    !completion ?: completion(YES);
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.state = CRJCallStateConnecting;

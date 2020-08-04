@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeAllCalls;
 
-- (void)startCallWithHandle:(NSString *)handle videoEnabled:(BOOL)videoEnabled;
+- (void)startCall:(NSString *)handle video:(BOOL)video;
 
 //通话暂时挂起
 - (void)setHeld:(CRJCall *)call onHold:(BOOL)onHold;

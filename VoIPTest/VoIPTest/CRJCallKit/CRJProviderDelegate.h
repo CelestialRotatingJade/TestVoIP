@@ -16,11 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shared;
 
-+ (BOOL)application:(UIApplication *)application
+- (void)setup:(NSDictionary *)options;
+
+- (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options NS_AVAILABLE_IOS(9_0);
 
-+ (BOOL)application:(UIApplication *)application
+- (BOOL)application:(UIApplication *)application
 continueUserActivity:(NSUserActivity *)userActivity
   restorationHandler:(void(^)(NSArray * __nullable restorableObjects))restorationHandler;
 

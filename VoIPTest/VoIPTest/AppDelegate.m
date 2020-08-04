@@ -10,7 +10,7 @@
 #import "VideoTalkManager.h"
 #import "PARNCallKit.h"
 #import "CRJVoIPPushManager.h"
-
+#import "CRJProviderDelegate.h"
 // iOS10 注册 APNs 所需头文件
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
@@ -79,6 +79,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler{
+    [[CRJProviderDelegate shared] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
     return [PARNCallKit application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 

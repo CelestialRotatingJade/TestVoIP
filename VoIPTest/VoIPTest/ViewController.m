@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-
+#import "CRJProviderDelegate.h"
 @interface ViewController ()
 
 @end
@@ -20,11 +20,33 @@
 
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [[CRJProviderDelegate shared] setup:@{
+        @"appName":@"VoIPTest",
+        @"imageName":@"icon_audio_bank_small",
+        @"ringtoneSound":@"voip_call.caf",
+    }];
+    
+    
+    NSDictionary *dictionaryPayload = @{
+        @"UUID":@"E621E1F8-C36C-495A-93FC-0C247A3E6E5F",
+        @"handle":@"18515353943",
+        @"":@(NO),
+    };
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    NSString *uuidString = dictionaryPayload[@"UUID"];
+    NSString *handle = dictionaryPayload[@"handle"];
+    NSNumber *hasVideo = dictionaryPayload[@"hasVideo"];
+
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+    [[CRJProviderDelegate shared] reportIncomingCall:uuid
+                                              handle:handle
+                                            hasVideo:hasVideo
+                                          completion:^(NSError *_Nonnull error){
+
+                                          }];
+    
+    
 }
-
 
 @end

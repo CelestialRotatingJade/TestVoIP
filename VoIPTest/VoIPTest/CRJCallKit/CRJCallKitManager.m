@@ -46,19 +46,20 @@
     [self.calls addObject:call];
     __weak __typeof(self) weakSelf = self;
     call.stateChanged = ^{
-        weakSelf.callsChangedHandler();
+        !weakSelf.callsChangedHandler ?: weakSelf.callsChangedHandler();
     };
-    self.callsChangedHandler();
+    
+    !self.callsChangedHandler ?: self.callsChangedHandler();
 }
 
 - (void)remove:(CRJCall *)call {
     [self.calls removeObject:call];
-    self.callsChangedHandler();
+    !self.callsChangedHandler ?: self.callsChangedHandler();
 }
 
 - (void)removeAllCalls {
     [self.calls removeAllObjects];
-    self.callsChangedHandler();
+    !self.callsChangedHandler ?: self.callsChangedHandler();
 }
 
 - (void)end:(CRJCall *)call {
@@ -70,7 +71,7 @@
     [self requestTransaction:transaction];
 }
 
-- (void)startCallWithHandle:(NSString *)handle videoEnabled:(BOOL)videoEnabled {
+- (void)startCall:(NSString *)handle video:(BOOL)video {
     //一个 CXHandle
     //对象表示了一次操作，同时指定了操作的类型和值。App支持对电话号码进行操作，因此我们在操作中指定了电话号码。
     CXHandle *cxHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:handle];
@@ -79,7 +80,7 @@
     CXStartCallAction *startCallAction = [[CXStartCallAction alloc] initWithCallUUID:[NSUUID UUID] handle:cxHandle];
 
     //你可以通过 action 的 video 属性指定通话是音频还是视频。
-    startCallAction.video = videoEnabled;
+    startCallAction.video = video;
 
     CXTransaction *transaction = [[CXTransaction alloc] initWithAction:startCallAction];
     [self requestTransaction:transaction];
@@ -106,19 +107,14 @@
 //调用 callController 的 request(_:completion:) 。系统会请求 CXProvider 执行这个
 //CXTransaction，这会导致你实现的委托方法被调用。
 - (void)requestTransaction:(CXTransaction *)transaction {
-#ifdef DEBUG
-    NSLog(@"[RNCallKit][requestTransaction] transaction = %@", transaction);
-#endif
+    CRJCallKitLog(@"[requestTransaction] transaction = %@", transaction);
+
     [self.callController requestTransaction:transaction
                                  completion:^(NSError *_Nullable error) {
                                      if (error != nil) {
-                                         NSLog(@"[RNCallKit][requestTransaction] Error requesting "
-                                               @"transaction (%@): (%@)",
-                                               transaction.actions,
-                                               error);
+                                         CRJCallKitLog(@"[requestTransaction] Error requesting transaction (%@): (%@)",transaction.actions,error);
                                      } else {
-                                         NSLog(@"[RNCallKit][requestTransaction] Requested "
-                                               @"transaction successfully");
+                                         CRJCallKitLog(@"[requestTransaction] Requested transaction successfully");
                                      }
                                  }];
 }
