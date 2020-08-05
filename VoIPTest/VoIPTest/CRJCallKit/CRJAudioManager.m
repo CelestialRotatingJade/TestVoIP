@@ -45,9 +45,8 @@
     if(_timer){
         [_timer invalidate];
         _timer = nil;
-    }else{
-        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(playkSystemSound) userInfo:nil repeats:YES];
     }
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(playkSystemSound) userInfo:nil repeats:YES];
 }
 
 - (void)stopAudio {

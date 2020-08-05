@@ -29,5 +29,15 @@ typedef NS_ENUM(NSUInteger, CRJCallConnectedState) {
     CRJCallConnectedStateComplete,
 };
 
+/**
+ *  Quickblox WebRTC conference types.
+ *
+ *  - QBRTCConferenceTypeVideo: video conference type
+ *  - QBRTCConferenceTypeAudio: audio conference type
+ */
+typedef NS_ENUM (NSUInteger, CRJCConferenceType) {
+    CRJCConferenceTypeVideo = 1,
+    CRJCConferenceTypeAudio = 2,
+};
 
 #endif /* CRJCallKitEnum_h */

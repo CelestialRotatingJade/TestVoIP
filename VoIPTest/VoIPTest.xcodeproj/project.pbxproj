@@ -26,6 +26,14 @@
 		AF9C619C24D9028C005A6FDE /* RCCallUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C619B24D9028C005A6FDE /* RCCallUserProfile.m */; };
 		AF9C619F24D90559005A6FDE /* RCCXCall.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C619E24D90559005A6FDE /* RCCXCall.m */; };
 		AF9C61A324D906C9005A6FDE /* RCCallKitUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C61A224D906C9005A6FDE /* RCCallKitUtility.m */; };
+		AF9C61AB24DA4394005A6FDE /* end_of_call.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF9C61A724DA4394005A6FDE /* end_of_call.wav */; };
+		AF9C61AC24DA4394005A6FDE /* calling.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF9C61A824DA4394005A6FDE /* calling.wav */; };
+		AF9C61AD24DA4394005A6FDE /* busy.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF9C61A924DA4394005A6FDE /* busy.wav */; };
+		AF9C61AE24DA4394005A6FDE /* ringtone.wav in Resources */ = {isa = PBXBuildFile; fileRef = AF9C61AA24DA4394005A6FDE /* ringtone.wav */; };
+		AF9C61B224DA43D6005A6FDE /* SoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C61B124DA43D6005A6FDE /* SoundManager.m */; };
+		AF9C61B624DA4574005A6FDE /* CallPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C61B524DA4574005A6FDE /* CallPermissions.m */; };
+		AF9C61B924DA48DE005A6FDE /* CRJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C61B824DA48DE005A6FDE /* CRJConfig.m */; };
+		AF9C61BD24DA4B68005A6FDE /* QBRTCSession.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9C61BC24DA4B68005A6FDE /* QBRTCSession.m */; };
 		D77EEDC524D3F0D9002533E2 /* PARNCallKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D77EEDC424D3F0D9002533E2 /* PARNCallKit.m */; };
 		D77EEDC824D3F980002533E2 /* PARNCallIKitConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D77EEDC724D3F980002533E2 /* PARNCallIKitConfig.m */; };
 		D77EEDCF24D408D7002533E2 /* CRJCall.m in Sources */ = {isa = PBXBuildFile; fileRef = D77EEDCE24D408D7002533E2 /* CRJCall.m */; };
@@ -91,6 +99,18 @@
 		AF9C619E24D90559005A6FDE /* RCCXCall.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCXCall.m; sourceTree = "<group>"; };
 		AF9C61A124D906C9005A6FDE /* RCCallKitUtility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCCallKitUtility.h; sourceTree = "<group>"; };
 		AF9C61A224D906C9005A6FDE /* RCCallKitUtility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCCallKitUtility.m; sourceTree = "<group>"; };
+		AF9C61A724DA4394005A6FDE /* end_of_call.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = end_of_call.wav; sourceTree = "<group>"; };
+		AF9C61A824DA4394005A6FDE /* calling.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = calling.wav; sourceTree = "<group>"; };
+		AF9C61A924DA4394005A6FDE /* busy.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = busy.wav; sourceTree = "<group>"; };
+		AF9C61AA24DA4394005A6FDE /* ringtone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringtone.wav; sourceTree = "<group>"; };
+		AF9C61B024DA43D6005A6FDE /* SoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundManager.h; sourceTree = "<group>"; };
+		AF9C61B124DA43D6005A6FDE /* SoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundManager.m; sourceTree = "<group>"; };
+		AF9C61B424DA4574005A6FDE /* CallPermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallPermissions.h; sourceTree = "<group>"; };
+		AF9C61B524DA4574005A6FDE /* CallPermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallPermissions.m; sourceTree = "<group>"; };
+		AF9C61B724DA48DE005A6FDE /* CRJConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRJConfig.h; sourceTree = "<group>"; };
+		AF9C61B824DA48DE005A6FDE /* CRJConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRJConfig.m; sourceTree = "<group>"; };
+		AF9C61BB24DA4B68005A6FDE /* QBRTCSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QBRTCSession.h; sourceTree = "<group>"; };
+		AF9C61BC24DA4B68005A6FDE /* QBRTCSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QBRTCSession.m; sourceTree = "<group>"; };
 		D77EEDC324D3F0D9002533E2 /* PARNCallKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PARNCallKit.h; sourceTree = "<group>"; };
 		D77EEDC424D3F0D9002533E2 /* PARNCallKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PARNCallKit.m; sourceTree = "<group>"; };
 		D77EEDC624D3F980002533E2 /* PARNCallIKitConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PARNCallIKitConfig.h; sourceTree = "<group>"; };
@@ -248,9 +268,59 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		AF9C61A524DA4322005A6FDE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C61A624DA4394005A6FDE /* Sounds */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AF9C61A624DA4394005A6FDE /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C61A724DA4394005A6FDE /* end_of_call.wav */,
+				AF9C61A824DA4394005A6FDE /* calling.wav */,
+				AF9C61A924DA4394005A6FDE /* busy.wav */,
+				AF9C61AA24DA4394005A6FDE /* ringtone.wav */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		AF9C61AF24DA43AA005A6FDE /* SoundManager */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C61B024DA43D6005A6FDE /* SoundManager.h */,
+				AF9C61B124DA43D6005A6FDE /* SoundManager.m */,
+			);
+			path = SoundManager;
+			sourceTree = "<group>";
+		};
+		AF9C61B324DA456B005A6FDE /* CallPermisions */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C61B424DA4574005A6FDE /* CallPermissions.h */,
+				AF9C61B524DA4574005A6FDE /* CallPermissions.m */,
+			);
+			path = CallPermisions;
+			sourceTree = "<group>";
+		};
+		AF9C61BA24DA4B62005A6FDE /* QBRTCSession */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C61BB24DA4B68005A6FDE /* QBRTCSession.h */,
+				AF9C61BC24DA4B68005A6FDE /* QBRTCSession.m */,
+			);
+			path = QBRTCSession;
+			sourceTree = "<group>";
+		};
 		D77EEDCB24D407AC002533E2 /* CRJCallKit */ = {
 			isa = PBXGroup;
 			children = (
+				AF9C61BA24DA4B62005A6FDE /* QBRTCSession */,
+				AF9C61B324DA456B005A6FDE /* CallPermisions */,
+				AF9C61AF24DA43AA005A6FDE /* SoundManager */,
+				AF9C61A524DA4322005A6FDE /* Resources */,
 				D77EEDCC24D407F2002533E2 /* CRJCallKitEnum.h */,
 				D77EEDCD24D408D7002533E2 /* CRJCall.h */,
 				D77EEDCE24D408D7002533E2 /* CRJCall.m */,
@@ -262,6 +332,8 @@
 				D77EEDD724D4130D002533E2 /* CRJProviderDelegate.m */,
 				D77EEDD924D42221002533E2 /* CRJVoIPPushManager.h */,
 				D77EEDDA24D42221002533E2 /* CRJVoIPPushManager.m */,
+				AF9C61B724DA48DE005A6FDE /* CRJConfig.h */,
+				AF9C61B824DA48DE005A6FDE /* CRJConfig.m */,
 			);
 			path = CRJCallKit;
 			sourceTree = "<group>";
@@ -385,8 +457,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA168231E5BD88700B3D3DA /* LaunchScreen.storyboard in Resources */,
+				AF9C61AC24DA4394005A6FDE /* calling.wav in Resources */,
+				AF9C61AD24DA4394005A6FDE /* busy.wav in Resources */,
 				8BA168201E5BD88700B3D3DA /* Assets.xcassets in Resources */,
+				AF9C61AB24DA4394005A6FDE /* end_of_call.wav in Resources */,
 				8BA168531E5BED3800B3D3DA /* voip_call.caf in Resources */,
+				AF9C61AE24DA4394005A6FDE /* ringtone.wav in Resources */,
 				8BA1681E1E5BD88700B3D3DA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -412,11 +488,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF9C61B624DA4574005A6FDE /* CallPermissions.m in Sources */,
 				AF9C619124D8FE80005A6FDE /* RCCall.m in Sources */,
 				D77EEDC824D3F980002533E2 /* PARNCallIKitConfig.m in Sources */,
 				AF9C619924D9008A005A6FDE /* RCCallClient.m in Sources */,
 				D77EEDD824D4130D002533E2 /* CRJProviderDelegate.m in Sources */,
 				8BA1681B1E5BD88700B3D3DA /* ViewController.m in Sources */,
+				AF9C61B224DA43D6005A6FDE /* SoundManager.m in Sources */,
 				D77EEDC524D3F0D9002533E2 /* PARNCallKit.m in Sources */,
 				D77EEDD224D40CEC002533E2 /* CRJAudioManager.m in Sources */,
 				8BA168181E5BD88700B3D3DA /* AppDelegate.m in Sources */,
@@ -427,7 +505,9 @@
 				AF9C619424D8FED7005A6FDE /* RCCallSession.m in Sources */,
 				D77EEDCF24D408D7002533E2 /* CRJCall.m in Sources */,
 				AF9C61A324D906C9005A6FDE /* RCCallKitUtility.m in Sources */,
+				AF9C61B924DA48DE005A6FDE /* CRJConfig.m in Sources */,
 				D77EEDDB24D42221002533E2 /* CRJVoIPPushManager.m in Sources */,
+				AF9C61BD24DA4B68005A6FDE /* QBRTCSession.m in Sources */,
 				AF9C619F24D90559005A6FDE /* RCCXCall.m in Sources */,
 				AF9C619C24D9028C005A6FDE /* RCCallUserProfile.m in Sources */,
 			);

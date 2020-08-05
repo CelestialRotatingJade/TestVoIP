@@ -24,12 +24,16 @@
 
 - (void)setState:(CRJCallState)state {
     _state = state;
-    !self.stateChanged ?: self.stateChanged();
+    if (self.stateChanged) {
+        self.stateChanged();
+    }
 }
 
 - (void)setConnectedState:(CRJCallConnectedState)connectedState {
     _connectedState = connectedState;
-    !self.connectedStateChanged ?: self.connectedStateChanged();
+    if (self.connectedStateChanged) {
+        self.connectedStateChanged();
+    }
 }
 
 - (void)start:(void (^)(BOOL success))completion {

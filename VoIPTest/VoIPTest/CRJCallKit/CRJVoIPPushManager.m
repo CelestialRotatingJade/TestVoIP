@@ -7,10 +7,18 @@
 //
 
 #import "CRJVoIPPushManager.h"
+#import <PushKit/PushKit.h>
 
 #import "CRJCallKitEnum.h"
+#import "CRJConfig.h"
 #import "CRJProviderDelegate.h"
-#import <PushKit/PushKit.h>
+
+const NSUInteger kQBPageSize = 50;
+static NSString *const kAps = @"aps";
+static NSString *const kAlert = @"alert";
+static NSString *const kVoipEvent = @"VOIPCall";
+NSString *const DEFAULT_PASSOWORD = @"quickblox";
+static const NSTimeInterval kAnswerInterval = 10.0f;
 
 @interface CRJVoIPPushManager () <PKPushRegistryDelegate>
 
@@ -87,16 +95,61 @@ typedef void (^VoipMsgBlcok)(PKPushRegistry *, PKPushPayload *, NSString *);
  会先走普通的启动流程，执行完didFinishLaunchingWithOptions，再执行此方法
  */
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(NSString *)type {
-    UIUserNotificationType theType = [UIApplication sharedApplication].currentUserNotificationSettings.types;
-
-    if (theType == UIUserNotificationTypeNone) {
-        UIUserNotificationSettings *userNotifySetting = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:userNotifySetting];
+    /*
+    NSDictionary *payload = @{
+        @"message"  : [NSString stringWithFormat:@"%@ is calling you.", initiatorName],
+        @"ios_voip" : @"1",
+        kVoipEvent  : @"1",
+        @"sessionID" : session.ID,
+        @"opponentsIDs" : allUsersIDsString,
+        @"contactIdentifier" : allUsersNamesString,
+        @"conferenceType" : conferenceTypeString,
+        @"timestamp" : timeStamp
+    };
+    */
+    NSDictionary *dic = payload.dictionaryPayload;
+    NSLog(@"dic  %@", dic);
+    //in case of bad internet we check how long the VOIP Push was delivered for call(1-1)
+    //if time delivery is more than “answerTimeInterval” - return
+    if (type == PKPushTypeVoIP &&
+        [payload.dictionaryPayload objectForKey:kVoipEvent] != nil &&
+        payload.dictionaryPayload[@"timestamp"] != nil &&
+        payload.dictionaryPayload[@"opponentsIDs"] != nil) {
+        NSString *opponentsIDsString = (NSString *)payload.dictionaryPayload[@"opponentsIDs"];
+        NSArray *opponentsIDsArray = [opponentsIDsString componentsSeparatedByString:@","];
+        if (opponentsIDsArray.count == 2) {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+            NSString *timeStampString = payload.dictionaryPayload[@"timestamp"];
+            NSDate *startCallDate = [formatter dateFromString:timeStampString];
+            NSTimeInterval timeIntervalSinceStartCall = [[NSDate date] timeIntervalSinceDate:startCallDate];
+            if (timeIntervalSinceStartCall > CRJConfig.answerTimeInterval) {
+                CRJCallKitLog(@"timeIntervalSinceStartCall > QBRTCConfig.answerTimeInterval");
+                return;
+            }
+        }
     }
 
-    NSDictionary *dic = payload.dictionaryPayload;
-
-    NSLog(@"dic  %@", dic);
+    if (type == PKPushTypeVoIP &&
+//        [payload.dictionaryPayload objectForKey:kVoipEvent] != nil &&
+//        [UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+//        __weak __typeof(self) weakSelf = self;
+//        
+//        NSMutableArray<NSNumber *> *opponentsNumberIDs = [NSMutableArray array];
+//        NSArray<NSString *> *opponentsIDs = nil;
+//        NSString *opponentsNamesString = @"incoming call. Connecting...";
+//        NSString *sessionID = nil;
+//        NSUUID *callUUID = [NSUUID UUID];
+//        NSUInteger sessionConferenceType = CRJCConferenceTypeAudio;
+//        self.isUpdatedPayload = NO;
+//        [QBRTCClient.instance addDelegate:self];
+//        
+        
+        
+        
+        
+        
+    }
 
     if ([dic[@"cmd"] isEqualToString:@"call"]) {
         UILocalNotification *backgroudMsg = [[UILocalNotification alloc] init];

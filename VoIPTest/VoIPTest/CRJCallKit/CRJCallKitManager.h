@@ -10,9 +10,13 @@
 #import <Foundation/Foundation.h>
 NS_ASSUME_NONNULL_BEGIN
 @class CRJCall;
-@interface CRJCallKitManager : NSObject
 
-@property (nonatomic, strong) NSMutableArray *calls;
+typedef void(^CompletionActionBlock)(Boolean isAccept);
+
+
+
+
+@interface CRJCallKitManager : NSObject
 
 + (instancetype)shared;
 

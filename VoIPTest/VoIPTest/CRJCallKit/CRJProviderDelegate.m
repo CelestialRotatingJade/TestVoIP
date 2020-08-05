@@ -11,11 +11,14 @@
 #import "CRJCallKitEnum.h"
 #import "CRJCallKitManager.h"
 #import "CRJProviderDelegate.h"
+
+static const NSInteger DefaultMaximumCallsPerCallGroup = 1;
+static const NSInteger DefaultMaximumCallGroups = 1;
+
 @interface CRJProviderDelegate ()
-// ProviderDelegate 需要和 CXProvider 和 CXCallController
-// 打交道，因此保持两个对二者的引用。
 @property (nonatomic, strong) CRJCallKitManager *callManager;
 @property (nonatomic, strong) CXProvider *provider;
+@property (nonatomic, assign) BOOL isCallStarted;
 @end
 
 @implementation CRJProviderDelegate {
@@ -32,48 +35,38 @@
     return instance;
 }
 
++ (CXProviderConfiguration *)configuration {
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    CXProviderConfiguration *config = [[CXProviderConfiguration alloc] initWithLocalizedName:appName];
+    config.supportsVideo = YES;
+    config.maximumCallsPerCallGroup = DefaultMaximumCallsPerCallGroup;
+    config.maximumCallGroups = DefaultMaximumCallGroups;
+    config.supportedHandleTypes = [NSSet setWithObjects:@(CXHandleTypePhoneNumber), nil];
+    config.iconTemplateImageData = UIImagePNGRepresentation([UIImage imageNamed:@"CallKitLogo"]);
+    config.ringtoneSound = @"voip_call.wav";
+    return config;
+}
+
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.callManager = [CRJCallKitManager shared];
+        CXProviderConfiguration *configuration = [CRJProviderDelegate configuration];
+        self.provider = [[CXProvider alloc] initWithConfiguration:configuration];
+        [self.provider setDelegate:self queue:nil];
+        self.isCallStarted = NO;
     }
     return self;
 }
 
 - (void)setup:(NSDictionary *)options {
     CRJCallKitLog(@"options = %@", options);
-    // 返回操作系统的版本号
     _version = [[[NSProcessInfo alloc] init] operatingSystemVersion];
     _settings = [[NSMutableDictionary alloc] initWithDictionary:options];
-
-    self.callManager = [CRJCallKitManager shared];
-    //用一个 CXProviderConfiguration 初始化
-    //CXProvider，前者在后面会定义成一个静态属性。CXProviderConfiguration
-    //用于定义通话的行为和能力。
-    self.provider = [[CXProvider alloc]
-        initWithConfiguration:[self getProviderConfiguration]];
-    //为了能够响应来自于 CXProvider 的事件，你需要设置它的委托。
-    [self.provider setDelegate:self queue:nil];
 }
 
-//通过设置CXProviderConfiguration来支持视频通话、电话号码处理，并将通话群组的数字限制为
-//1 个，其实光看属性名大家也能看得懂吧。
-- (CXProviderConfiguration *)getProviderConfiguration {
-    CRJCallKitLog(@"[getProviderConfiguration]");
-    CXProviderConfiguration *providerConfiguration = [[CXProviderConfiguration alloc] initWithLocalizedName:_settings[@"appName"]];
-    providerConfiguration.supportsVideo = YES;
-    providerConfiguration.maximumCallGroups = 1;
-    providerConfiguration.maximumCallsPerCallGroup = 1;
-    providerConfiguration.supportedHandleTypes = [NSSet
-        setWithObjects:[NSNumber numberWithInteger:CXHandleTypePhoneNumber], nil];
-    if (_settings[@"imageName"]) {
-        providerConfiguration.iconTemplateImageData = UIImagePNGRepresentation(
-            [UIImage imageNamed:_settings[@"imageName"]]);
-    }
-    if (_settings[@"ringtoneSound"]) {
-        providerConfiguration.ringtoneSound = _settings[@"ringtoneSound"];
-    }
-    return providerConfiguration;
-}
+
+
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
@@ -130,15 +123,34 @@
     return NO;
 }
 
+- (BOOL)isCallDidStarted {
+    return self.isCallStarted == YES;
+}
+
+- (CRJCall *)currentCall {
+    CRJCallKitLog(@"currentCall self.calls %@",  @(self.callManager.calls.count));
+    CRJCall *currentCall = (CRJCall *)self.callManager.calls.firstObject;
+    if (currentCall) {
+        return currentCall;
+    }
+    return nil;
+}
+
+
+
+
+
+
+
 //用来更新系统电话属性的。。
 - (CXCallUpdate *)callUpdateWithHandle:(NSString *)handle
                               hasVideo:(BOOL)hasVideo {
     CXHandle *remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:handle];
 
     CXCallUpdate *update = [[CXCallUpdate alloc] init];
-    update.localizedCallerName = @"ParadiseDuo"; //对方的名字，可以设置为app注册的昵称
-    update.supportsHolding = NO;                 //通话过程中再来电，是否支持保留并接听
-    update.supportsDTMF = NO;                    //是否支持键盘拨号
+//    update.localizedCallerName = @"ParadiseDuo"; //对方的名字，可以设置为app注册的昵称
+//    update.supportsHolding = NO;                 //通话过程中再来电，是否支持保留并接听
+//    update.supportsDTMF = NO;                    //是否支持键盘拨号
     update.remoteHandle = remoteHandle;          //通话对方的Handle 信息
     update.hasVideo = hasVideo;                  //本次通话是否有视频
     return update;

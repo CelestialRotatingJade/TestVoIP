@@ -9,8 +9,22 @@
 #import "CRJCall.h"
 #import "CRJCallKitEnum.h"
 #import "CRJCallKitManager.h"
-@interface CRJCallKitManager ()
-@property (nonatomic, strong) CXCallController *callController;
+#import "QBRTCSession.h"
+
+typedef void (^AudioSessionInitializeBlock)(QBRTCSession *session);
+
+static const NSInteger DefaultMaximumCallsPerCallGroup = 1;
+static const NSInteger DefaultMaximumCallGroups = 1;
+
+@interface CRJCallKitManager () <CXProviderDelegate>
+@property (assign, nonatomic) BOOL isCallStarted;
+@property (strong, nonatomic) CXProvider *provider;
+@property (strong, nonatomic) CXCallController *callController;
+@property (strong, nonatomic) NSMutableArray<CRJCall *> *calls;
+@property (copy, nonatomic) dispatch_block_t actionCompletionBlock;
+@property (copy, nonatomic) CompletionActionBlock onAcceptActionBlock;
+@property (copy, nonatomic) AudioSessionInitializeBlock audioSessionInitializeBlock;
+@property (weak, nonatomic) QBRTCSession *session;
 @end
 
 @implementation CRJCallKitManager
@@ -28,7 +42,7 @@
     self = [super init];
     if (self) {
         self.calls = [NSMutableArray array];
-        self.callController = [[CXCallController alloc] init];
+        self.callController = [[CXCallController alloc] initWithQueue:dispatch_get_main_queue()];
     }
     return self;
 }
@@ -46,20 +60,28 @@
     [self.calls addObject:call];
     __weak __typeof(self) weakSelf = self;
     call.stateChanged = ^{
-        !weakSelf.callsChangedHandler ?: weakSelf.callsChangedHandler();
+        if (weakSelf.callsChangedHandler) {
+            weakSelf.callsChangedHandler();
+        }
     };
 
-    !self.callsChangedHandler ?: self.callsChangedHandler();
+    if (self.callsChangedHandler) {
+        self.callsChangedHandler();
+    }
 }
 
 - (void)remove:(CRJCall *)call {
     [self.calls removeObject:call];
-    !self.callsChangedHandler ?: self.callsChangedHandler();
+    if (self.callsChangedHandler) {
+        self.callsChangedHandler();
+    }
 }
 
 - (void)removeAllCalls {
     [self.calls removeAllObjects];
-    !self.callsChangedHandler ?: self.callsChangedHandler();
+    if (self.callsChangedHandler) {
+        self.callsChangedHandler();
+    }
 }
 
 - (void)end:(CRJCall *)call {

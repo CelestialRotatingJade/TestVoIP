@@ -41,7 +41,7 @@
 
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
     
-    [[CRJCallKitManager shared] startCall:@"zhangsan_voip" video:YES];
+    [[CRJCallKitManager shared] startCall:@"12345" video:YES];
     
     
 //    [[CRJProviderDelegate shared] reportIncomingCall:uuid
